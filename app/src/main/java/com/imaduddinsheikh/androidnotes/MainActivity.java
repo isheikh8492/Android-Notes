@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
+    private String dynamicAppName = "Android Notes";
 
     private final List<Note> noteList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < 30; i++) {
             noteList.add(new Note("Hello " + i, "jndfkndjndfkj"));
+        }
+
+        if (noteList.size() > 0) {
+            setTitle(getTitle() + " (" + noteList.size() + ")");
         }
     }
 
