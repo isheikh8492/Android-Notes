@@ -5,32 +5,32 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDateTime;
-
 public class Note {
-
     private final String title;
 
     private final String text;
 
-    private final LocalDateTime lastUpdateDateTime;
+    private final long lastUpdateDateTime;
 
-    public Note(String title, String text, LocalDateTime lastUpdateDateTime) {
+    private int counter = 1;
+
+    Note(String title, String text) {
         this.title = title;
         this.text = text;
-        this.lastUpdateDateTime = lastUpdateDateTime;
+        this.lastUpdateDateTime = System.currentTimeMillis();
+        this.counter++;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
-    public LocalDateTime getLastUpdateDateTime() {
-        return lastUpdateDateTime;
+    public long getLastUpdateDateTime() {
+        return this.lastUpdateDateTime;
     }
 
     public JSONObject toJSON() {
@@ -40,7 +40,7 @@ public class Note {
 
             jsonObject.put("title", getTitle());
             jsonObject.put("text", getText());
-            jsonObject.put("lastUpdatedDateTime", getLastUpdateDateTime().toString());
+            jsonObject.put("lastUpdatedDateTime", getLastUpdateDateTime());
 
             return jsonObject;
 
@@ -56,7 +56,7 @@ public class Note {
         return "Note{" +
                 "title='" + this.title + '\'' +
                 ", text='" + this.text + '\'' +
-                ", lastUpdatedDateTime=" + this.lastUpdateDateTime.toString() +
+                ", lastUpdatedDateTime=" + this.lastUpdateDateTime +
                 '}';
     }
 }

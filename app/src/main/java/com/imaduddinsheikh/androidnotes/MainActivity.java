@@ -1,20 +1,41 @@
 package com.imaduddinsheikh.androidnotes;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
+
+    private final List<Note> noteList = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.notesRecyclerView);
+
+        NotesAdapter adapter = new NotesAdapter(noteList, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        for (int i = 0; i < 30; i++) {
+            noteList.add(new Note("Hello " + i, "jndfkndjndfkj"));
+        }
     }
 
     @Override
@@ -26,5 +47,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = recyclerView.getChildLayoutPosition(v);
+        Note n = noteList.get(pos);
+        Toast.makeText(v.getContext(), "SHORT " + n.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        int pos = recyclerView.getChildLayoutPosition(v);
+        Note n = noteList.get(pos);
+        Toast.makeText(v.getContext(), "LONG " + n.toString(), Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "The back button was pressed - Bye!", Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
     }
 }
