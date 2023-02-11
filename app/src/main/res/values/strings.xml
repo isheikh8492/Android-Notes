@@ -2,4 +2,6 @@
     <string name="app_name">Android Notes</string>
     <string name="add_a_new_note">Add a New Note</string>
     <string name="about">About</string>
+    <string name="save_note">Save note</string>
+    <string name="name">Name</string>
 </resources>

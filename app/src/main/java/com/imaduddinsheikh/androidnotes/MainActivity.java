@@ -1,5 +1,6 @@
 package com.imaduddinsheikh.androidnotes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,6 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
-    private String dynamicAppName = "Android Notes";
 
     private final List<Note> noteList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menuAddNote) {
+            Intent intent = new Intent(this, AddNoteActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
