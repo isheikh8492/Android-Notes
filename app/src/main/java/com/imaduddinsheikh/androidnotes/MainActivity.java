@@ -24,20 +24,11 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
-
     private final List<Note> noteList = new ArrayList<>();
     private RecyclerView recyclerView;
-
     private NotesAdapter adapter;
-
     private LinearLayoutManager linearLayoutManager;
-
     private ActivityResultLauncher<Intent> activityResultLauncher;
-
-    private static final int EDIT_NOTE_REQUEST = 123;
-
-    private static final int NEW_NOTE_REQUEST = 124;
-
     private int posClicked = Integer.MIN_VALUE;
 
     @Override
@@ -46,15 +37,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.notesRecyclerView);
-
         adapter = new NotesAdapter(noteList, this);
         recyclerView.setAdapter(adapter);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        for (int i = 0; i < 30; i++) {
-            noteList.add(new Note("Hello " + i, "jndfkndjndfkj"));
-        }
 
         if (noteList.size() > 0) {
             setTitle(getTitle() + " (" + noteList.size() + ")");
@@ -78,14 +64,11 @@ public class MainActivity extends AppCompatActivity
 
             if (posClicked != RecyclerView.NO_POSITION && posClicked >= 0 && posClicked < noteList.size()) {
                 Note old = noteList.get(posClicked);
-                old.setTitle(n.getTitle());
-                old.setText(n.getText());
-                noteList.add(0, old);
-                adapter.notifyItemChanged(0);
-            } else {
-                noteList.add(0, n);
-                adapter.notifyItemInserted(0);
+                noteList.remove(old);
+                adapter.notifyItemRemoved(posClicked);
             }
+            noteList.add(0, n);
+            adapter.notifyItemInserted(0);
             linearLayoutManager.scrollToPosition(0);
             setTitle("Android Notes (" + noteList.size() + ")");
         } else {
@@ -104,11 +87,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.menuAddNote) {
-            Intent intent = new Intent(this, EditActivity.class);
-            activityResultLauncher.launch(intent);
+            addTop();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,7 +117,8 @@ public class MainActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
-    public void AddNewNote(View view) {
-
+    public void addTop() {
+        Intent intent = new Intent(this, EditActivity.class);
+        activityResultLauncher.launch(intent);
     }
 }
