@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
+        posClicked = Integer.MIN_VALUE;
     }
 
     @Override
