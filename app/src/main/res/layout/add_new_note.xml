@@ -10,26 +10,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Enter Note Title"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:shadowColor="#FFFFFF"
-        android:text="@string/name"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/noteTextBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Enter Note Text"
         android:inputType="textMultiLine"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteTitleBox"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/noteTitleBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>

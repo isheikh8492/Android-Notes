@@ -5,7 +5,9 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private final String title;
 
     private final String text;

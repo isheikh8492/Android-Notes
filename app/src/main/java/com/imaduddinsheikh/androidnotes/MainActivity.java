@@ -1,12 +1,17 @@
 package com.imaduddinsheikh.androidnotes;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +28,12 @@ public class MainActivity extends AppCompatActivity
     private final List<Note> noteList = new ArrayList<>();
     private RecyclerView recyclerView;
 
+    private NotesAdapter adapter;
+
+    private LinearLayoutManager linearLayoutManager;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +41,10 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = findViewById(R.id.notesRecyclerView);
 
-        NotesAdapter adapter = new NotesAdapter(noteList, this);
+        adapter = new NotesAdapter(noteList, this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         for (int i = 0; i < 30; i++) {
             noteList.add(new Note("Hello " + i, "jndfkndjndfkj"));
@@ -40,6 +52,31 @@ public class MainActivity extends AppCompatActivity
 
         if (noteList.size() > 0) {
             setTitle(getTitle() + " (" + noteList.size() + ")");
+        }
+
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                this::handleResult);
+    }
+
+    public void handleResult(ActivityResult result) {
+
+        if (result == null || result.getData() == null) {
+            Log.d(TAG, "handleResult: NULL ActivityResult received");
+            return;
+        }
+
+        Intent data = result.getData();
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            if (data.hasExtra("NOTE")) {
+                Note newNote = (Note) data.getSerializableExtra("NOTE");
+                if (newNote != null) {
+                    noteList.add(0, newNote);
+                    adapter.notifyItemInserted(0);
+                    setTitle("Android Notes (" + noteList.size() + ")");
+                    linearLayoutManager.scrollToPosition(0);
+                }
+            }
         }
     }
 
@@ -55,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.menuAddNote) {
             Intent intent = new Intent(this, AddNoteActivity.class);
-            startActivity(intent);
+            activityResultLauncher.launch(intent);
             return true;
         }
 
