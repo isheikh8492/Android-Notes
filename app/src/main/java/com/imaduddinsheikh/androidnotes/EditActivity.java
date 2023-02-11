@@ -8,16 +8,19 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AddNoteActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity {
 
-    private static final String TAG = "AddNoteActivity";
+    private static final String TAG = "EditActivity";
 
     private EditText noteTitle;
 
     private EditText noteText;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,12 @@ public class AddNoteActivity extends AppCompatActivity {
 
         noteTitle = findViewById(R.id.noteTitleBox);
         noteText = findViewById(R.id.noteTextBox);
+
+        if (getIntent().hasExtra("NOTE")) {
+            Note n = (Note) getIntent().getSerializableExtra("NOTE");
+            noteTitle.setText(n.getTitle());
+            noteText.setText(n.getText());
+        }
     }
 
     @Override

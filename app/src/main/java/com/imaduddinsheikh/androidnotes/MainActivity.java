@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
+    private static final int EDIT_NOTE_REQUEST = 123;
+
+    private static final int NEW_NOTE_REQUEST = 124;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.menuAddNote) {
-            Intent intent = new Intent(this, AddNoteActivity.class);
+            Intent intent = new Intent(this, EditActivity.class);
             activityResultLauncher.launch(intent);
             return true;
         }
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onLongClick(View v) {
         int pos = recyclerView.getChildLayoutPosition(v);
         Note n = noteList.get(pos);
-        Toast.makeText(v.getContext(), "LONG " + n.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), "LONG " + n.toString(), Toast.LENGTH_LONG).show();
         return false;
     }
 
