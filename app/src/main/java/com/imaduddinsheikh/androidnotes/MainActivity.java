@@ -76,9 +76,8 @@ public class MainActivity extends AppCompatActivity
         if (result.getResultCode() == Activity.RESULT_OK) {
             Note n = (Note) data.getSerializableExtra("NOTE");
 
-            if (posClicked != RecyclerView.NO_POSITION && posClicked < noteList.size()) {
+            if (posClicked != RecyclerView.NO_POSITION && posClicked >= 0 && posClicked < noteList.size()) {
                 Note old = noteList.get(posClicked);
-                noteList.remove(old);
                 old.setTitle(n.getTitle());
                 old.setText(n.getText());
                 noteList.add(0, old);
@@ -135,5 +134,9 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         Toast.makeText(this, "The back button was pressed - Bye!", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
+    }
+
+    public void AddNewNote(View view) {
+
     }
 }

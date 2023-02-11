@@ -37,6 +37,7 @@ public class EditActivity extends AppCompatActivity {
             noteTitle.setText(note.getTitle());
             noteText.setText(note.getText());
         } else {
+            note = new Note(noteTitle.getText().toString(), noteText.getText().toString());
             Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
     }
