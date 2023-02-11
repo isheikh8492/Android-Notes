@@ -8,11 +8,11 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class Note implements Serializable {
-    private final String title;
+    private String title;
 
-    private final String text;
+    private String text;
 
-    private final long lastUpdateDateTime;
+    private long lastUpdateDateTime;
 
     private int counter = 1;
 
@@ -21,6 +21,16 @@ public class Note implements Serializable {
         this.text = text;
         this.lastUpdateDateTime = System.currentTimeMillis();
         this.counter++;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.lastUpdateDateTime = System.currentTimeMillis();
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        this.lastUpdateDateTime = System.currentTimeMillis();
     }
 
     public String getTitle() {
@@ -34,6 +44,8 @@ public class Note implements Serializable {
     public long getLastUpdateDateTime() {
         return this.lastUpdateDateTime;
     }
+
+
 
     public JSONObject toJSON() {
 

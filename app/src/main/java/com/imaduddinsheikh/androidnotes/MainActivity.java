@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int NEW_NOTE_REQUEST = 124;
 
+    private int posClicked = Integer.MIN_VALUE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,15 +74,23 @@ public class MainActivity extends AppCompatActivity
 
         Intent data = result.getData();
         if (result.getResultCode() == Activity.RESULT_OK) {
-            if (data.hasExtra("NOTE")) {
-                Note newNote = (Note) data.getSerializableExtra("NOTE");
-                if (newNote != null) {
-                    noteList.add(0, newNote);
-                    adapter.notifyItemInserted(0);
-                    setTitle("Android Notes (" + noteList.size() + ")");
-                    linearLayoutManager.scrollToPosition(0);
-                }
+            Note n = (Note) data.getSerializableExtra("NOTE");
+
+            if (posClicked != RecyclerView.NO_POSITION && posClicked < noteList.size()) {
+                Note old = noteList.get(posClicked);
+                noteList.remove(old);
+                old.setTitle(n.getTitle());
+                old.setText(n.getText());
+                noteList.add(0, old);
+                adapter.notifyItemChanged(0);
+            } else {
+                noteList.add(0, n);
+                adapter.notifyItemInserted(0);
             }
+            linearLayoutManager.scrollToPosition(0);
+            setTitle("Android Notes (" + noteList.size() + ")");
+        } else {
+            Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -105,9 +115,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        int pos = recyclerView.getChildLayoutPosition(v);
-        Note n = noteList.get(pos);
-        Toast.makeText(v.getContext(), "SHORT " + n.toString(), Toast.LENGTH_SHORT).show();
+        posClicked = recyclerView.getChildLayoutPosition(v);
+
+        Note n = noteList.get(posClicked);
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra("NOTE", n);
+        activityResultLauncher.launch(intent);
     }
 
     @Override

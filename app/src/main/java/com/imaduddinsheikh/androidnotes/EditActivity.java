@@ -21,6 +21,7 @@ public class EditActivity extends AppCompatActivity {
     private EditText noteText;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +31,13 @@ public class EditActivity extends AppCompatActivity {
         noteTitle = findViewById(R.id.noteTitleBox);
         noteText = findViewById(R.id.noteTextBox);
 
-        if (getIntent().hasExtra("NOTE")) {
-            Note n = (Note) getIntent().getSerializableExtra("NOTE");
-            noteTitle.setText(n.getTitle());
-            noteText.setText(n.getText());
+        Intent intent = getIntent();
+        if (intent.hasExtra("NOTE")) {
+            note = (Note) getIntent().getSerializableExtra("NOTE");
+            noteTitle.setText(note.getTitle());
+            noteText.setText(note.getText());
+        } else {
+            Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -68,6 +72,8 @@ public class EditActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 }
