@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditActivity extends AppCompatActivity {
@@ -75,7 +76,41 @@ public class EditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        String noteTitleText = noteTitle.getText().toString();
+        String noteTextText = noteText.getText().toString();
+        if (!noteTitleText.equals(note.getTitle()) || !noteTextText.equals(note.getText())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton("YES", (dialog, id) -> {
+                onBackPressedSave();
+            });
+            builder.setNegativeButton("NO", (dialog, id) -> {
+                finish();
+            });
+            builder.setTitle("Your note is not saved!\nSave Note '" + noteTitleText + "'?");
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+    private void onBackPressedSave() {
+        String noteTitleText = noteTitle.getText().toString();
+        String noteTextText = noteText.getText().toString();
+        if (noteTitleText.trim().isEmpty()) {
+            Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
+        }
 
-
+        Intent intent = new Intent();
+        Note newNote = new Note(noteTitleText, noteTextText);
+        if (!(newNote.getTitle().equals(note.getTitle())) || !(newNote.getText().equals(note.getText()))) {
+            intent.putExtra("NOTE", newNote);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        } else {
+            finish();
+        }
+    }
 }
