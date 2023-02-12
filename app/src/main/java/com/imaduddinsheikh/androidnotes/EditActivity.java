@@ -62,9 +62,13 @@ public class EditActivity extends AppCompatActivity {
 
             Intent intent = new Intent();
             Note newNote = new Note(noteTitleText, noteTextText);
-            intent.putExtra("NOTE", newNote);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            if (!(newNote.getTitle().equals(note.getTitle())) || !(newNote.getText().equals(note.getText()))) {
+                intent.putExtra("NOTE", newNote);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            } else {
+                finish();
+            }
             return true;
         }
 
