@@ -75,42 +75,38 @@ public class EditActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void onBackPressed() {
         String noteTitleText = noteTitle.getText().toString();
         String noteTextText = noteText.getText().toString();
-        if (!noteTitleText.equals(note.getTitle()) || !noteTextText.equals(note.getText())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setPositiveButton("YES", (dialog, id) -> {
-                onBackPressedSave();
-            });
-            builder.setNegativeButton("NO", (dialog, id) -> {
-                finish();
-            });
-            builder.setTitle("Your note is not saved!\nSave Note '" + noteTitleText + "'?");
-            AlertDialog dialog = builder.create();
-            dialog.show();
+
+        if ((noteTitleText.trim().isEmpty() && !noteTextText.isEmpty()) || (noteTitleText.trim().isEmpty() && noteTextText.isEmpty())) {
+            Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
         } else {
-            super.onBackPressed();
+            if (!noteTitleText.trim().equals(note.getTitle()) || !noteTextText.equals(note.getText())) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setPositiveButton("YES", (dialog, id) -> {
+                    onBackPressedSave(noteTitleText, noteTextText);
+                });
+                builder.setNegativeButton("NO", (dialog, id) -> {
+                    super.onBackPressed();
+                });
+                builder.setTitle("Your note is not saved!\nSave Note '" + noteTitleText + "'?");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
-    private void onBackPressedSave() {
-        String noteTitleText = noteTitle.getText().toString();
-        String noteTextText = noteText.getText().toString();
-        if (noteTitleText.trim().isEmpty()) {
-            Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
-        }
-
+    private void onBackPressedSave(String noteTitleText, String noteTextText) {
         Intent intent = new Intent();
         Note newNote = new Note(noteTitleText, noteTextText);
         if (!(newNote.getTitle().equals(note.getTitle())) || !(newNote.getText().equals(note.getText()))) {
             intent.putExtra("NOTE", newNote);
             setResult(Activity.RESULT_OK, intent);
-            finish();
-        } else {
-            finish();
         }
+        finish();
     }
 }
