@@ -42,9 +42,7 @@ public class MainActivity extends AppCompatActivity
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        if (noteList.size() > 0) {
-            setTitle(getTitle() + " (" + noteList.size() + ")");
-        }
+        changeTitleIfNeeded();
 
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -74,6 +72,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
+        changeTitleIfNeeded();
         posClicked = Integer.MIN_VALUE;
     }
 
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.menuAddNote) {
             addTop();
+            changeTitleIfNeeded();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -108,8 +108,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onLongClick(View v) {
         int pos = recyclerView.getChildLayoutPosition(v);
         Note n = noteList.get(pos);
-        Toast.makeText(v.getContext(), "LONG " + n.toString(), Toast.LENGTH_LONG).show();
-        return false;
+        noteList.remove(pos);
+        adapter.notifyItemRemoved(pos);
+        changeTitleIfNeeded();
+        return true;
     }
 
     @Override
@@ -121,5 +123,13 @@ public class MainActivity extends AppCompatActivity
     public void addTop() {
         Intent intent = new Intent(this, EditActivity.class);
         activityResultLauncher.launch(intent);
+    }
+
+    public void changeTitleIfNeeded() {
+        if (adapter.getItemCount() > 0) {
+            setTitle(getString(R.string.app_name) + " (" + adapter.getItemCount() + ")");
+        } else {
+            setTitle(getString(R.string.app_name));
+        }
     }
 }
