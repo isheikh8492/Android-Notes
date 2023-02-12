@@ -58,9 +58,6 @@ public class EditActivity extends AppCompatActivity {
             if (noteTitleText.trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
                 return true;
-            } else if (noteTextText.trim().isEmpty()) {
-                Toast.makeText(this, "Please enter the note's text", Toast.LENGTH_SHORT).show();
-                return true;
             }
 
             Intent intent = new Intent();
