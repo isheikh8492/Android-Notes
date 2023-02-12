@@ -50,6 +50,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
         String dateTime = simpleDateFormat.format(new Date(note.getLastUpdateDateTime()));
         holder.dateTime.setText(dateTime);
         holder.text.setText(note.getText());
+        if (note.getText().length() > 80) {
+            String truncatedText = note.getText();
+            truncatedText = truncatedText.substring(0, 80) + "...";
+            holder.text.setText(truncatedText);
+        }
     }
 
     @Override
