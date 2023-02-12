@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -106,11 +107,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onLongClick(View v) {
+
         int pos = recyclerView.getChildLayoutPosition(v);
-        Note n = noteList.get(pos);
-        noteList.remove(pos);
-        adapter.notifyItemRemoved(pos);
-        changeTitleIfNeeded();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("YES", (dialog, id) -> {
+            noteList.remove(pos);
+            adapter.notifyItemRemoved(pos);
+            changeTitleIfNeeded();
+        });
+        builder.setNegativeButton("NO", (dialog, id) -> dialog.dismiss());
+        builder.setTitle("Delete Note '" + noteList.get(pos).getTitle() + "'?");
+        AlertDialog dialog = builder.create();
+        dialog.show();
         return true;
     }
 
