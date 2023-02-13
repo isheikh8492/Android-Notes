@@ -10,4 +10,7 @@
     <string name="devName">\u00A92023, Imaduddin Sheikh</string>
     <string name="version_name">Version 1.0</string>
     <string name="todo">TODO</string>
+    <string name="file_name">Notes.json</string>
+    <string name="no_file">No saved notes found</string>
+    <string name="saved">noteList saved!</string>
 </resources>

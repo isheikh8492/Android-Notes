@@ -1,6 +1,7 @@
 package com.imaduddinsheikh.androidnotes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,5 +156,36 @@ public class MainActivity extends AppCompatActivity
         } else {
             setTitle(getString(R.string.app_name));
         }
+    }
+
+    private void saveNotes() {
+
+        Log.d(TAG, "saveNotes: Saving JSON File");
+
+        try {
+            FileOutputStream fos = getApplicationContext().
+                    openFileOutput(getString(R.string.file_name), Context.MODE_PRIVATE);
+
+            PrintWriter printWriter = new PrintWriter(fos);
+            JSONArray jsonArray = new JSONArray();
+            for (Note note : noteList) {
+                JSONObject jsonObject = note.toJSON();
+                jsonArray.put(jsonObject);
+            }
+
+            Log.d(TAG, "saveNotes: " + jsonArray);
+            printWriter.print(jsonArray);
+            printWriter.close();
+            fos.close();
+            Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() { // Going to be partially or fully hidden
+        saveNotes();
+        super.onPause();
     }
 }
