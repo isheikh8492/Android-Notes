@@ -127,8 +127,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "The back button was pressed - Bye!", Toast.LENGTH_SHORT).show();
-        super.onBackPressed();
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setPositiveButton("YES", (dialog, id1) -> {
+            finish();
+        });
+        builder2.setNegativeButton("NO", (dialog, id2) -> {
+            dialog.dismiss();
+        });
+        builder2.setTitle("Are you sure you want to exit?");
+        AlertDialog dialog = builder2.create();
+        dialog.show();
     }
 
     public void addTop() {
