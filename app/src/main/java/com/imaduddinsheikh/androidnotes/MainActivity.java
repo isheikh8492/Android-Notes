@@ -80,11 +80,12 @@ public class MainActivity extends AppCompatActivity
             noteList.add(0, n);
             adapter.notifyItemInserted(0);
             linearLayoutManager.scrollToPosition(0);
-            setTitle("Android Notes (" + noteList.size() + ")");
         } else {
             Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
         changeTitleIfNeeded();
+        saveNotes();
+        Log.d(TAG, "noteList size: " + noteList.toString());
         posClicked = Integer.MIN_VALUE;
     }
 
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity
             adapter.notifyItemRemoved(pos);
             changeTitleIfNeeded();
             saveNotes();
+            Log.d(TAG, "noteList size: " + noteList.toString());
         });
         builder.setNegativeButton("NO", (dialog, id) -> dialog.dismiss());
         builder.setTitle("Delete Note '" + noteList.get(pos).getTitle() + "'?");
@@ -230,6 +232,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() { // After Pause or Stop
+        noteList.clear();
         loadFile();
         changeTitleIfNeeded();
         super.onResume();
