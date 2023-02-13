@@ -57,7 +57,16 @@ public class EditActivity extends AppCompatActivity {
             String noteTitleText = noteTitle.getText().toString();
             String noteTextText = noteText.getText().toString();
             if (noteTitleText.trim().isEmpty()) {
-                Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setPositiveButton("OK", (dialog, id1) -> {
+                    super.onBackPressed();
+                });
+                builder1.setNegativeButton("CANCEL", (dialog, id1) -> {
+                    dialog.dismiss();
+                });
+                builder1.setTitle("Your note doesn't have a title.");
+                AlertDialog dialog = builder1.create();
+                dialog.show();
                 return true;
             }
 
@@ -81,7 +90,16 @@ public class EditActivity extends AppCompatActivity {
         String noteTextText = noteText.getText().toString();
 
         if ((noteTitleText.trim().isEmpty() && !noteTextText.isEmpty()) || (noteTitleText.trim().isEmpty() && noteTextText.isEmpty())) {
-            Toast.makeText(this, "Please enter the note's title", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setPositiveButton("OK", (dialog, id1) -> {
+                super.onBackPressed();
+            });
+            builder1.setNegativeButton("CANCEL", (dialog, id1) -> {
+                dialog.dismiss();
+            });
+            builder1.setTitle("Your note doesn't have a title.");
+            AlertDialog dialog = builder1.create();
+            dialog.show();
         } else {
             if (!noteTitleText.trim().equals(note.getTitle()) || !noteTextText.equals(note.getText())) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
