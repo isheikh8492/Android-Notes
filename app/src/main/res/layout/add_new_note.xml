@@ -3,18 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:padding="13dp">
+
 
     <EditText
         android:id="@+id/noteTitleBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:background="@color/white"
         android:ems="10"
         android:hint="@string/enter_note_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:padding="4dp"
         android:shadowColor="#FFFFFF"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/noteTextBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,10 +31,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:autofillHints=""
+        android:background="@color/white"
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/enter_note_text"
         android:inputType="textMultiLine"
+        android:padding="4dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
