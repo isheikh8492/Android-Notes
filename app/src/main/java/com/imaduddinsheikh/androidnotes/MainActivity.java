@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity
             addTop();
             changeTitleIfNeeded();
             return true;
+        } else if (id == R.id.menuAbout) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            activityResultLauncher.launch(intent);
         }
         return super.onOptionsItemSelected(item);
     }

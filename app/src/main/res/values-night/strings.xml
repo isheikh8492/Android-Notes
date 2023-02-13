@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Android Notes</string>
     <string name="add_a_new_note">Add a New Note</string>
     <string name="about">About</string>
     <string name="save_note">Save note</string>
     <string name="name">Name</string>
     <string name="enter_note_title">Enter Note Title</string>
     <string name="enter_note_text">Enter Note Text</string>
+    <string name="devName">\u00A92023, Imaduddin Sheikh</string>
+    <string name="version_name">Version 1.0</string>
+    <string name="todo">TODO</string>
 </resources>
