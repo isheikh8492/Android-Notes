@@ -12,4 +12,6 @@
     <string name="file_name">Notes.json</string>
     <string name="no_file">No saved notes found</string>
     <string name="saved">noteList saved!</string>
+    <string name="datetime">DateTime</string>
+    <string name="title">Title</string>
 </resources>

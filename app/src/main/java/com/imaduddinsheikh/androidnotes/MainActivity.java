@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+        BorderItemDecoration spacingItemDecoration = new BorderItemDecoration(this, 13, 5);
+        recyclerView.addItemDecoration(spacingItemDecoration);
 
         changeTitleIfNeeded();
 
