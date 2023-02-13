@@ -23,6 +23,12 @@ public class Note implements Serializable {
         this.counter++;
     }
 
+    public Note(String title, String text, long lastUpdatedDateTime) {
+        this.title = title;
+        this.text = text;
+        this.lastUpdateDateTime = lastUpdatedDateTime;
+    }
+
     public void setTitle(String title) {
         this.title = title;
         this.lastUpdateDateTime = System.currentTimeMillis();

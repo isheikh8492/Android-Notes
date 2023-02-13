@@ -22,8 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.menuAbout) {
             Intent intent = new Intent(this, AboutActivity.class);
             activityResultLauncher.launch(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -123,6 +129,7 @@ public class MainActivity extends AppCompatActivity
             noteList.remove(pos);
             adapter.notifyItemRemoved(pos);
             changeTitleIfNeeded();
+            saveNotes();
         });
         builder.setNegativeButton("NO", (dialog, id) -> dialog.dismiss());
         builder.setTitle("Delete Note '" + noteList.get(pos).getTitle() + "'?");
@@ -185,7 +192,46 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() { // Going to be partially or fully hidden
-        saveNotes();
         super.onPause();
+    }
+
+    private void loadFile() {
+
+        Log.d(TAG, "loadFile: Loading JSON File");
+        try {
+            FileInputStream fis = getApplicationContext().openFileInput(getString(R.string.file_name));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            JSONArray jsonArray = new JSONArray(sb.toString());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String title = jsonObject.getString("title");
+                String text = jsonObject.getString("text");
+                long lastUpdatedDateTime = jsonObject.getLong("lastUpdatedDateTime");
+
+                Note note = new Note(title, text, lastUpdatedDateTime);
+                noteList.add(note);
+                Log.d(TAG, "loadFile: " + noteList);
+            }
+            reader.close();
+            fis.close();
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, getString(R.string.no_file), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() { // After Pause or Stop
+        loadFile();
+        changeTitleIfNeeded();
+        super.onResume();
     }
 }
