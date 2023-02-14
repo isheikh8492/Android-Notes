@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
             reader.close();
             fis.close();
         } catch (FileNotFoundException e) {
-            noteList = new ArrayList<>();
+            // Toast for error
         } catch (Exception e) {
             e.printStackTrace();
         }
