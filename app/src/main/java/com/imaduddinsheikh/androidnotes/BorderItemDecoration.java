@@ -27,7 +27,6 @@ public class BorderItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int spacingInPixels = (int) (spacingInDp * density + 0.5f);
         outRect.top = spacingInPixels;
-        outRect.bottom = spacingInPixels;
         outRect.left = spacingInPixels;
         outRect.right = spacingInPixels;
     }

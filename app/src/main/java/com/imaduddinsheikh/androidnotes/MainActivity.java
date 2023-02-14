@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
-    private final List<Note> noteList = new ArrayList<>();
+    private List<Note> noteList = new ArrayList<>();
     private RecyclerView recyclerView;
     private NotesAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -55,6 +56,14 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         BorderItemDecoration spacingItemDecoration = new BorderItemDecoration(this, 13, 5);
         recyclerView.addItemDecoration(spacingItemDecoration);
+
+        if (savedInstanceState != null) {
+            noteList = (List<Note>) savedInstanceState.getSerializable("NOTE_LIST");
+            adapter.notifyDataSetChanged();
+            linearLayoutManager.scrollToPosition(0);
+            changeTitleIfNeeded();
+            super.onRestoreInstanceState(savedInstanceState);
+        }
 
         changeTitleIfNeeded();
 
@@ -238,5 +247,20 @@ public class MainActivity extends AppCompatActivity
         loadFile();
         changeTitleIfNeeded();
         super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("NOTE_LIST", (Serializable) noteList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        noteList = (List<Note>) savedInstanceState.getSerializable("NOTE_LIST");
+        adapter = new NotesAdapter(noteList, this);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "onRestoreInstanceState: " + noteList.toString());
     }
 }
