@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -39,7 +38,6 @@ public class EditActivity extends AppCompatActivity {
             noteText.setText(note.getText());
         } else {
             note = new Note(noteTitle.getText().toString(), noteText.getText().toString());
-            Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -126,5 +124,20 @@ public class EditActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, intent);
         }
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("NOTE_TITLE", noteTitle.getText().toString());
+        outState.putString("NOTE_TEXT", noteText.getText().toString());
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        noteTitle.setText(savedInstanceState.getString("NOTE_TITLE"));
+        noteText.setText(savedInstanceState.getString("NOTE_TEXT"));
     }
 }

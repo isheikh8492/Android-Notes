@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -57,13 +56,7 @@ public class MainActivity extends AppCompatActivity
         BorderItemDecoration spacingItemDecoration = new BorderItemDecoration(this, 13, 5);
         recyclerView.addItemDecoration(spacingItemDecoration);
 
-        if (savedInstanceState != null) {
-            noteList = (List<Note>) savedInstanceState.getSerializable("NOTE_LIST");
-            adapter.notifyDataSetChanged();
-            linearLayoutManager.scrollToPosition(0);
-            changeTitleIfNeeded();
-            super.onRestoreInstanceState(savedInstanceState);
-        }
+        loadFile();
 
         changeTitleIfNeeded();
 
@@ -92,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             adapter.notifyItemInserted(0);
             linearLayoutManager.scrollToPosition(0);
         } else {
-            Toast.makeText(this, "OTHER result not OK!", Toast.LENGTH_SHORT).show();
+            // Toast was here
         }
         changeTitleIfNeeded();
         saveNotes();
@@ -197,7 +190,6 @@ public class MainActivity extends AppCompatActivity
             printWriter.print(jsonArray);
             printWriter.close();
             fos.close();
-            Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -235,7 +227,7 @@ public class MainActivity extends AppCompatActivity
             reader.close();
             fis.close();
         } catch (FileNotFoundException e) {
-            Toast.makeText(this, getString(R.string.no_file), Toast.LENGTH_SHORT).show();
+            noteList = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
         }
